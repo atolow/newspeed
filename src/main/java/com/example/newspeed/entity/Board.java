@@ -25,13 +25,11 @@ public class Board extends BaseEntity{
 //    @JoinColumn(name = "member_id")
 //    private Member member;
 
-
     public Board(String title, String contents, String img_add) {
         this.title = title;
         this.contents = contents;
         this.img_add = img_add;
     }
-
     public Board() {
     }
 
