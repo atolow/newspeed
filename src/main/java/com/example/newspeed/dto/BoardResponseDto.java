@@ -19,7 +19,6 @@ public class BoardResponseDto {
         this.contents = contents;
         this.img_add = img_add;
     }
-
     public static BoardResponseDto toDto(Board board){
         return new BoardResponseDto(board.getId(), board.getTitle(), board.getContents(), board.getImg_add());
     }

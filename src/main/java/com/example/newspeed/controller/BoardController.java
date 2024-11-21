@@ -18,7 +18,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-
     @PostMapping("/create")
     public ResponseEntity<BoardResponseDto> save(@RequestBody CreateBoardRequestDto requestDto) {
 
