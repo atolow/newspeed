@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/signup")
 public class SignUpController {
     private final UserService userService;
 
@@ -18,7 +18,7 @@ public class SignUpController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping()
     public ResponseEntity<SignUpResponseDto> createUser(@RequestBody SignUpRequestDto requestdto) {
         SignUpResponseDto responseDto = userService.createUser(requestdto);
         return new ResponseEntity<>(responseDto,  HttpStatus.CREATED);
@@ -29,6 +29,5 @@ public class SignUpController {
         List<SignUpResponseDto> responseDtos = userService.searchAllUser();
         return new ResponseEntity<>(responseDtos,HttpStatus.OK);
     }
-
 
 }
