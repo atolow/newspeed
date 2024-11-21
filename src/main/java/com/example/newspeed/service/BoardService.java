@@ -34,12 +34,12 @@ public class BoardService {
 
     }
     @Transactional
-    public BoardResponseDto updateTitleOrContents(Long id,String newTitle, String newContents) {
+    public BoardResponseDto updateTitleOrContents(Long id,String title, String contents) {
 
         Board findboard = boardRepository.findByIdOrElseThrow(id);
 
 
-        findboard.updateTitleOrContents(newTitle,newContents);
+        findboard.updateTitleOrContents(title,contents);
 
         return new BoardResponseDto(findboard.getId(),findboard.getTitle(),findboard.getContents(), findboard.getImg_add());
     }
