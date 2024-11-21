@@ -17,16 +17,16 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId) {
+    public ResponseEntity<UserResponseDto> findById(@PathVariable String userId) {
 
-        UserResponseDto dto = userService.findById(userId);
+        UserResponseDto dto = userService.findByEmail(userId);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity<Void> updatePassword(
-            @PathVariable long userId,
+            @PathVariable String userId,
             @RequestBody @Valid UpdatePasswordRequestDto dto
             ) {
 

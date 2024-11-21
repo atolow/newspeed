@@ -1,9 +1,13 @@
 package com.example.newspeed.controller;
 
+import com.example.newspeed.common.Const;
 import com.example.newspeed.dto.BoardResponseDto;
 import com.example.newspeed.dto.CreateBoardRequestDto;
 import com.example.newspeed.dto.UpdateTitleOrContentsRequestDto;
+import com.example.newspeed.dto.UserResponseDto;
 import com.example.newspeed.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,17 +51,29 @@ public class BoardController {
     @PatchMapping("/{id}")
     public ResponseEntity<BoardResponseDto> updateTitleOrContents(
             @PathVariable(value = "id") Long id,
-            @RequestBody UpdateTitleOrContentsRequestDto requestDto) {
+            @RequestBody UpdateTitleOrContentsRequestDto requestDto,
+            HttpServletRequest request) {
 
-        BoardResponseDto boardResponseDto = boardService.updateTitleOrContents(id, requestDto.getTitle(), requestDto.getContents());
+        HttpSession session = request.getSession(false);
 
-        return new ResponseEntity<>(boardResponseDto,HttpStatus.OK);
+        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+
+
+        boardService.UpdateTitleOrContentsRequestDto(id, requestDto.getTitle(), requestDto.getContents(), loginUser);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @RequestBody BoardResponseDto responseDto,
+            HttpServletRequest request) {
 
-        boardService.delete(id);
+        HttpSession session = request.getSession(false);
+
+        UserResponseDto loginUser = (UserResponseDto) session.getAttribute(Const.LOGIN_USER);
+
+        boardService.delete(id,loginUser);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

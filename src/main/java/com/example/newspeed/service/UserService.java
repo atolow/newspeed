@@ -33,9 +33,9 @@ public class UserService {
     private final HttpSession httpSession;
     private final ServletRequest httpServletRequest;
 
-    public UserResponseDto findById(long id) {
+    public UserResponseDto findByEmail(String email) {
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findByUserEmail(email);
 
         if (optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 아이디가 존재하지 않습니다.");
@@ -46,9 +46,9 @@ public class UserService {
         return new UserResponseDto(findUser.getUserName(), findUser.getUserEmail());
     }
 
-    public void updatePassword(long id, String oldPassword, String newPassword) {
+    public void updatePassword(String email, String oldPassword, String newPassword) {
 
-        User user = userRepository.findByIdOrElseThrow(id);
+        User user = userRepository.findByUserEmailOrElseThrow(email);
 
         if (!passwordEncoding.matches(oldPassword, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
@@ -100,11 +100,12 @@ public class UserService {
     }
 
     // login
-    public SignUpResponseDto login(SignUpRequestDto requestDto, HttpServletRequest servletRequest) {
-        Optional<User> byUserEmail = userRepository.findByUserEmail(requestDto.getUserEmail());
-        HttpSession session = servletRequest.getSession();
-        session.setAttribute("loginUser", byUserEmail.get());
-        return new SignUpResponseDto(byUserEmail.get());
+    public SignUpResponseDto login(String password, String email) {
+        User optionMember = userRepository.findByUserEmailOrElseThrow(email);
+        if(!optionMember.getUserEmail().equals(email) || !optionMember.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        return new SignUpResponseDto(optionMember.getUserEmail());
     }
 
     public boolean isValidEmail(String userEmail) {
