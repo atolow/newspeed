@@ -1,4 +1,4 @@
-package com.example.newspeed.service;
+package com.example.newspeed.exception;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
