@@ -2,7 +2,9 @@ package com.example.newspeed.service;
 
 import com.example.newspeed.dto.BoardResponseDto;
 import com.example.newspeed.entity.Board;
+import com.example.newspeed.entity.User;
 import com.example.newspeed.repository.BoardRepository;
+import com.example.newspeed.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     public BoardResponseDto save(String title, String contents,String img_add){
         Board board = new Board(title, contents, img_add);

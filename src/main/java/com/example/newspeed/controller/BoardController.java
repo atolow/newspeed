@@ -3,6 +3,7 @@ package com.example.newspeed.controller;
 import com.example.newspeed.dto.BoardResponseDto;
 import com.example.newspeed.dto.CreateBoardRequestDto;
 import com.example.newspeed.dto.UpdateTitleOrContentsRequestDto;
+import com.example.newspeed.dto.UserResponseDto;
 import com.example.newspeed.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
