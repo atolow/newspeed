@@ -103,7 +103,7 @@ public class UserService {
     public SignUpResponseDto login(SignUpRequestDto requestDto, HttpServletRequest servletRequest) {
         Optional<User> byUserEmail = userRepository.findByUserEmail(requestDto.getUserEmail());
         HttpSession session = servletRequest.getSession();
-        session.setAttribute("loginUser", byUserEmail);
+        session.setAttribute("loginUser", byUserEmail.get());
         return new SignUpResponseDto(byUserEmail.get());
     }
 
