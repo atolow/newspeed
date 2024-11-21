@@ -21,9 +21,9 @@ public class Board extends BaseEntity{
     @Column
     private String img_add;
 
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member member;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Board(String title, String contents, String img_add) {
         this.title = title;
@@ -33,9 +33,9 @@ public class Board extends BaseEntity{
     public Board() {
     }
 
-//    public void setMember(Member member) {
-//        this.member = member;
-//    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public void updateTitleOrContents(String title,String contents) {
         this.title = title;
