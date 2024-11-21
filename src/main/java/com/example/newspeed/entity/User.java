@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 
-@Getter
 @Entity
-@Table(name="user")
-public class User extends BaseEntity{
+@Table(name = "user")
+@Getter
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,8 +36,8 @@ public class User extends BaseEntity{
         this.interests = interests;
     }
 
-    public void updatePassword(String password){
+    public void updatePassword(String password) {
+
         this.password = password;
     }
-
 }
