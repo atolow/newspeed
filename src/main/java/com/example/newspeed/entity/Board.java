@@ -17,23 +17,28 @@ public class Board extends BaseEntity{
     @Column(columnDefinition = "longtext")
     private String contents;
 
-
     @Column
     private String img_add;
+
+    @Column(nullable = false)
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Board(String title, String contents, String img_add) {
+    public Board(String title, String contents, String img_add, String email) {
         this.title = title;
         this.contents = contents;
         this.img_add = img_add;
+        this.email = email;
     }
+
     public Board() {
     }
 
-    public void setMember(User user) {
+
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -41,5 +46,6 @@ public class Board extends BaseEntity{
         this.title = title;
         this.contents=contents;
     }
+
 }
 

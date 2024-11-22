@@ -3,7 +3,9 @@ package com.example.newspeed.service;
 import com.example.newspeed.dto.BoardResponseDto;
 import com.example.newspeed.dto.UserResponseDto;
 import com.example.newspeed.entity.Board;
+import com.example.newspeed.entity.User;
 import com.example.newspeed.repository.BoardRepository;
+import com.example.newspeed.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,18 +22,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
-    public BoardResponseDto save(String title, String contents,String img_add){
-        Board board = new Board(title, contents, img_add);
+    public BoardResponseDto save(String title, String contents,String img_add, String email){
+        User finduser = userRepository.findByUserEmailOrElseThrow(email);
+        Board board = new Board(title, contents, img_add,email);
+
+        board.setUser(finduser);
 
         Board savedBoard = boardRepository.save(board);
 
-        return new BoardResponseDto(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getImg_add());
+        return new BoardResponseDto(savedBoard.getId(), savedBoard.getTitle(), savedBoard.getContents(), savedBoard.getImg_add(), savedBoard.getEmail());
     }
     public BoardResponseDto findById(long id){
 
         Board findBoard = boardRepository.findByIdOrElseThrow(id);
-        return new BoardResponseDto(findBoard.getId(), findBoard.getTitle(), findBoard.getContents(), findBoard.getImg_add());
+        return new BoardResponseDto(findBoard.getId(), findBoard.getTitle(), findBoard.getContents(), findBoard.getImg_add(), findBoard.getEmail());
     }
     public List<BoardResponseDto> findAll(){
         return boardRepository.findAll().stream().map(BoardResponseDto::toDto).toList();
