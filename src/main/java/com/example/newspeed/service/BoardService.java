@@ -7,6 +7,9 @@ import com.example.newspeed.repository.BoardRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -54,5 +57,10 @@ public class BoardService {
             throw new RuntimeException("글쓴이가 아닙니다.");
         }
         boardRepository.delete(findBoard);
+    }
+    public Page<BoardResponseDto> getPostsPage(int pageNo) {
+        Pageable pageable = PageRequest.of(pageNo, 10);
+
+        return boardRepository.findAllByOrderByCreatedAtDesc(pageable).map(BoardResponseDto::toDto);
     }
 }

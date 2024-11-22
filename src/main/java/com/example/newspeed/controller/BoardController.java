@@ -9,6 +9,9 @@ import com.example.newspeed.service.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +79,10 @@ public class BoardController {
         boardService.delete(id,loginUser);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/api/posts")
+    public Page<BoardResponseDto> getPostsPage(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo){
+        return boardService.getPostsPage(pageNo);
     }
 }
 
