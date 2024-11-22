@@ -1,14 +1,13 @@
 package com.example.newspeed.service;
 
-import com.example.newspeed.dto.SignUpRequestDto;
-import com.example.newspeed.dto.SignUpResponseDto;
-import com.example.newspeed.dto.UserResponseDto;
+import com.example.newspeed.dto.*;
 import com.example.newspeed.entity.User;
 import com.example.newspeed.exception.PasswordEncoding;
 import com.example.newspeed.repository.UserRepository;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
@@ -43,9 +42,10 @@ public class UserService {
 
         User findUser = optionalUser.get();
 
-        return new UserResponseDto(findUser.getUserName(), findUser.getUserEmail());
+        return new UserResponseDto(findUser.getUserName(), findUser.getUserEmail(), findUser.getCreatedAt(), findUser.getModifiedAt(), findUser.getAge(), findUser.getInterests());
     }
 
+    @Transactional
     public void updatePassword(String id, String oldPassword, String newPassword) {
 
         User user = userRepository.findByUserEmailOrElseThrow(id);
@@ -60,6 +60,16 @@ public class UserService {
         }
 
         user.updatePassword(passwordEncoding.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateProfile(String id, UpdateProfileRequestDto dto) {
+
+        User user = userRepository.findByUserEmailOrElseThrow(id);
+
+        user.updateProfile(dto.getUserName(), dto.getAge(), dto.getInterests());
+        userRepository.save(user);
     }
 
     public SignUpResponseDto createUser(SignUpRequestDto requestDto) {
@@ -125,6 +135,4 @@ public class UserService {
         matchPw = Pattern.compile(passwordRegex).matcher(pw);
         return matchPw.find();
     }
-
-
 }
