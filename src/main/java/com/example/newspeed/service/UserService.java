@@ -110,11 +110,14 @@ public class UserService {
     }
 
     // login
-    public SignUpResponseDto login(SignUpRequestDto requestDto, HttpServletRequest servletRequest) {
-        Optional<User> byUserEmail = userRepository.findByUserEmail(requestDto.getUserEmail());
-        HttpSession session = servletRequest.getSession();
-        session.setAttribute("loginUser", byUserEmail.get());
-        return new SignUpResponseDto(byUserEmail.get());
+    public SignUpResponseDto login(String password, String email) {
+        User optionMember = userRepository.findByUserEmailOrElseThrow(email);
+
+        boolean matchedPassword = passwordEncoding.matches(password,optionMember.getPassword());
+        if(!optionMember.getUserEmail().equals(email) || !matchedPassword){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        return new SignUpResponseDto(optionMember.getUserEmail());
     }
 
     public boolean isValidEmail(String userEmail) {

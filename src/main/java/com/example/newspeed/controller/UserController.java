@@ -1,5 +1,6 @@
 package com.example.newspeed.controller;
 
+import com.example.newspeed.common.Const;
 import com.example.newspeed.dto.UpdatePasswordRequestDto;
 import com.example.newspeed.dto.UpdateProfileRequestDto;
 import com.example.newspeed.dto.UserResponseDto;
@@ -21,9 +22,9 @@ public class UserController {
     @GetMapping("/myprofile")
     public ResponseEntity<UserResponseDto> findByEmail(HttpSession httpSession) {
 
-        User userId = (User) httpSession.getAttribute("loginUser");
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
 
-        UserResponseDto dto = userService.findByEmail(userId.getUserEmail());
+        UserResponseDto dto = userService.findByEmail(userId.getEmail());
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
@@ -34,9 +35,9 @@ public class UserController {
             @RequestBody UpdatePasswordRequestDto dto
             ) {
 
-        User userId = (User) httpSession.getAttribute("loginUser");
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
 
-        userService.updatePassword(userId.getUserEmail(), dto.getOldPassword(), dto.getNewPassword());
+        userService.updatePassword(userId.getEmail(), dto.getOldPassword(), dto.getNewPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -47,9 +48,9 @@ public class UserController {
             @RequestBody UpdateProfileRequestDto dto
     ) {
 
-        User userId = (User) httpSession.getAttribute("loginUser");
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
 
-        userService.updateProfile(userId.getUserEmail(), dto);
+        userService.updateProfile(userId.getEmail(), dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
