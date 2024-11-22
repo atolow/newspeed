@@ -102,7 +102,9 @@ public class UserService {
     // login
     public SignUpResponseDto login(String password, String email) {
         User optionMember = userRepository.findByUserEmailOrElseThrow(email);
-        if(!optionMember.getUserEmail().equals(email) || !optionMember.getPassword().equals(password)){
+
+        boolean matchedPassword = passwordEncoding.matches(password,optionMember.getPassword());
+        if(!optionMember.getUserEmail().equals(email) || !matchedPassword){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         return new SignUpResponseDto(optionMember.getUserEmail());
