@@ -2,10 +2,7 @@ package com.example.newspeed.entity;
 
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -45,5 +42,12 @@ public class User extends BaseEntity {
     public void updatePassword(String password) {
 
         this.password = password;
+    }
+
+    public void updateProfile(String userName, Integer age, String interests) {
+
+        this.userName = userName;
+        this.age = age;
+        this.interests = interests;
     }
 }
