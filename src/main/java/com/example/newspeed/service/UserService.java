@@ -33,9 +33,9 @@ public class UserService {
     private final HttpSession httpSession;
     private final ServletRequest httpServletRequest;
 
-    public UserResponseDto findById(long id) {
+    public UserResponseDto findByEmail(String id) {
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findByUserEmail(id);
 
         if (optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 아이디가 존재하지 않습니다.");
@@ -46,9 +46,9 @@ public class UserService {
         return new UserResponseDto(findUser.getUserName(), findUser.getUserEmail());
     }
 
-    public void updatePassword(long id, String oldPassword, String newPassword) {
+    public void updatePassword(String id, String oldPassword, String newPassword) {
 
-        User user = userRepository.findByIdOrElseThrow(id);
+        User user = userRepository.findByUserEmailOrElseThrow(id);
 
         if (!passwordEncoding.matches(oldPassword, user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");

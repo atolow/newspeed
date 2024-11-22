@@ -30,6 +30,7 @@ public class Board extends BaseEntity{
         this.contents = contents;
         this.img_add = img_add;
     }
+
     public Board() {
     }
 
