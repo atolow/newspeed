@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 
     private final UserService userService;
@@ -20,7 +19,7 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<SignUpResponseDto> login(
             @RequestBody SignUpRequestDto requestDto,
             HttpServletRequest servletRequest ){
@@ -38,5 +37,13 @@ public class LoginController {
         // 로그인 성공시 리다이렉트
         return new ResponseEntity<>(login, HttpStatus.CREATED);
     }
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate(); // 해당 세션(데이터)을 삭제한다.
+        }
+    }
+
 
 }
