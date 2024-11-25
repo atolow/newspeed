@@ -20,6 +20,7 @@ public class Board extends BaseEntity{
     @Column
     private String img_add;
 
+
     @Column(nullable = false)
     private String email;
 
@@ -33,7 +34,6 @@ public class Board extends BaseEntity{
         this.img_add = img_add;
         this.email = email;
     }
-
     public Board() {
     }
 
