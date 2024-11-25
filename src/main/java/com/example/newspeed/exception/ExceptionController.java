@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @ControllerAdvice
-public class exceptionController {
+public class ExceptionController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> notValidExHandler(MethodArgumentNotValidException e) {
