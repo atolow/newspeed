@@ -11,12 +11,10 @@ import lombok.Getter;
 public class UpdatePasswordRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*[@$!%*?&#])[A-Za-z\\\\d@$!%*?&#]$")
-    @Size(min = 8, max = 20)
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9ㄱ-힣]).{8,20}$", message = "올바른 형식의 비밀번호가 아닙니다.")
     private final String oldPassword;
 
     @NotBlank
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*[@$!%*?&#])[A-Za-z\\\\d@$!%*?&#]$")
-    @Size(min = 8, max = 20)
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9ㄱ-힣]).{8,20}$", message = "올바른 형식의 비밀번호가 아닙니다.")
     private final String newPassword;
 }

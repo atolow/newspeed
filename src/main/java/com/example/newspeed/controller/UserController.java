@@ -1,9 +1,12 @@
 package com.example.newspeed.controller;
 
+import com.example.newspeed.common.Const;
 import com.example.newspeed.dto.UpdatePasswordRequestDto;
+import com.example.newspeed.dto.UpdateProfileRequestDto;
 import com.example.newspeed.dto.UserResponseDto;
+import com.example.newspeed.entity.User;
 import com.example.newspeed.service.UserService;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +19,38 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponseDto> findById(@PathVariable Long userId) {
+    @GetMapping("/myprofile")
+    public ResponseEntity<UserResponseDto> findByEmail(HttpSession httpSession) {
 
-        UserResponseDto dto = userService.findById(userId);
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
+
+        UserResponseDto dto = userService.findByEmail(userId.getEmail());
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PatchMapping("/{userId}")
+    @PatchMapping("/updatepassword")
     public ResponseEntity<Void> updatePassword(
-            @PathVariable long userId,
-            @RequestBody @Valid UpdatePasswordRequestDto dto
+            HttpSession httpSession,
+            @RequestBody UpdatePasswordRequestDto dto
             ) {
 
-        userService.updatePassword(userId, dto.getOldPassword(), dto.getNewPassword());
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
+
+        userService.updatePassword(userId.getEmail(), dto.getOldPassword(), dto.getNewPassword());
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<Void> updateProfile(
+            HttpSession httpSession,
+            @RequestBody UpdateProfileRequestDto dto
+    ) {
+
+        UserResponseDto userId = (UserResponseDto) httpSession.getAttribute(Const.LOGIN_USER);
+
+        userService.updateProfile(userId.getEmail(), dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
