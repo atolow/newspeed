@@ -44,6 +44,4 @@ public class LoginController {
             session.invalidate(); // 해당 세션(데이터)을 삭제한다.
         }
     }
-
-
 }
